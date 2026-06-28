@@ -1,0 +1,79 @@
+# Working code by assigning User Assigned Managed Identity to Agent Pool of AKS cluster
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: python-blob-pod
+#   namespace: default
+# spec:
+#   serviceAccountName: azure-access-managed-identity-sa
+#   containers:
+#     - name: azcli
+#       image: mcr.microsoft.com/azure-cli
+#       command: ["sleep", "3600"]
+#       volumeMounts:
+#         - name: azure-token
+#           mountPath: /var/run/secrets/azure/tokens
+#           readOnly: true
+#   volumes:
+#     - name: azure-token
+#       projected:
+#         sources:
+#           - serviceAccountToken:
+#               audience: api://24a568b2-d4c8-4fc8-9ee1-3b099ea75fea # replace with managed identity client ID
+#               expirationSeconds: 3600
+#               path: azure-identity-token
+
+#Working code by assigning User Assigned Managed Identity to Agent Pool of AKS cluster
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: python-blob-pod
+#   namespace: default
+# spec:
+#   serviceAccountName: azure-access-managed-identity-sa
+#   containers:
+#     - name: azcli
+#       image: mcr.microsoft.com/azure-cli
+#       command: ["sleep", "3600"]
+#       volumeMounts:
+#         - name: azure-token
+#           mountPath: /var/run/secrets/azure/tokens
+#           readOnly: true
+#   volumes:
+#     - name: azure-token
+#       projected:
+#         sources:
+#           - serviceAccountToken:
+#               audience: api://AzureADTokenExchange
+#               expirationSeconds: 3600
+#               path: azure-identity-token
+
+# Working code. Need to use az login --federated-token "$(cat $AZURE_FEDERATED_TOKEN_FILE)" --service-principal -u $AZURE_CLIENT_ID -t $AZURE_TENANT_ID to login to Azure using the federated token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: python-aks-blob-pod
+  namespace: default
+  labels:
+    azure.workload.identity/use: "true" # Required. Only pods with this label can use workload identity.
+spec:
+  serviceAccountName: azure-access-managed-identity-sa
+  containers:
+    - image: prasadreddy2349/aks-python-azure-blob-reader
+      imagePullPolicy: Always
+      name: python-blob-container
+      env:
+        - name: AZURE_STORAGE_ACCOUNT_NAME
+          value: demoakstgacc123 # Replace with your Azure Storage Account name
+        - name: AZURE_STORAGE_CONTAINER_NAME #
+          value: test-container # Replace with your Azure Storage Container name
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "500m"
+        limits:
+          memory: "512Mi"
+          cpu: "1"

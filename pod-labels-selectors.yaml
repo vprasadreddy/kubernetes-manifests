@@ -1,0 +1,73 @@
+# Frontend Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    appVersion: v1
+  name: frontend-application
+spec:
+  containers:
+    - image: nginx:1.25.4
+      name: frontend-container
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+      ports:
+        - containerPort: 80
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+---
+# Backend Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    appVersion: v1
+  name: backend-application
+spec:
+  containers:
+    - image: nginx:1.25.4
+      name: backend-container
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+      ports:
+        - containerPort: 80
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+---
+# Database Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    appVersion: v1
+  name: database-application
+spec:
+  containers:
+    - image: nginx:1.25.4
+      name: database-container
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+      ports:
+        - containerPort: 80
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}

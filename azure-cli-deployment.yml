@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-cli-deployment
+  namespace: default
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: azure-cli-deployment
+  template:
+    metadata:
+      labels:
+        app: azure-cli-deployment
+    spec:
+      serviceAccountName: azure-access-managed-identity-sa # Kubernetes Service Account. This binds the pod to the MI
+      containers:
+        - name: azure-cli-container
+          image: mcr.microsoft.com/azure-cli
+          imagePullPolicy: Always
+          command: ["sleep", "3600"]
+          volumeMounts:
+            - name: azure-token
+              mountPath: /var/run/secrets/azure/tokens
+              readOnly: true
+      volumes:
+        - name: azure-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: api://xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx # replace with Azure Managed Identity Client ID
+                  expirationSeconds: 3600
+                  path: azure-identity-token

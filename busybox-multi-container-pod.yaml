@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox-multi-container-pod
+  name: busybox-multi-container-pod
+spec:
+  containers:
+    - image: busybox:latest
+      name: busybox-container-1
+      command: ["/bin/sh", "-c", "ls; sleep 3600;"]
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+    - image: busybox:latest
+      name: busybox-container-2
+      command: ["/bin/sh", "-c", "echo 'This is Prasad'; sleep 1000;"]
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+    - image: busybox:latest
+      name: busybox-container-3
+      command: ["/bin/sh", "-c", "date; sleep 3600;"]
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

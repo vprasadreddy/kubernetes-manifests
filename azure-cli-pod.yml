@@ -1,0 +1,123 @@
+# Working code by assigning User Assigned Managed Identity to Agent Pool of AKS cluster
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: azure-cli-pod
+#   namespace: default
+# spec:
+#   serviceAccountName: azure-access-managed-identity-sa
+#   containers:
+#     - name: azcli
+#       image: mcr.microsoft.com/azure-cli
+#       command: ["sleep", "3600"]
+#       volumeMounts:
+#         - name: azure-token
+#           mountPath: /var/run/secrets/azure/tokens
+#           readOnly: true
+#   volumes:
+#     - name: azure-token
+#       projected:
+#         sources:
+#           - serviceAccountToken:
+#               audience: api://24a568b2-d4c8-4fc8-9ee1-3b099ea75fea # replace with managed identity client ID
+#               expirationSeconds: 3600
+#               path: azure-identity-token
+
+#Working code by assigning User Assigned Managed Identity to Agent Pool of AKS cluster
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: azure-cli-pod
+#   namespace: default
+# spec:
+#   serviceAccountName: azure-access-managed-identity-sa
+#   containers:
+#     - name: azcli
+#       image: mcr.microsoft.com/azure-cli
+#       command: ["sleep", "3600"]
+#       volumeMounts:
+#         - name: azure-token
+#           mountPath: /var/run/secrets/azure/tokens
+#           readOnly: true
+#   volumes:
+#     - name: azure-token
+#       projected:
+#         sources:
+#           - serviceAccountToken:
+#               audience: api://AzureADTokenExchange
+#               expirationSeconds: 3600
+#               path: azure-identity-token
+# Not able to create Pod if specifying both volumes with api://managed_identity_client_id & labels with azure.workload.identity/use: true
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: azure-cli-pod
+#   namespace: default
+#   labels:
+#     azure.workload.identity/use: "true" # Required. Only pods with this label can use workload identity.
+# spec:
+#   serviceAccountName: azure-access-managed-identity-sa
+#   containers:
+#     - name: azcli
+#       image: mcr.microsoft.com/azure-cli
+#       command: ["sleep", "3600"]
+#       volumeMounts:
+#         - name: azure-token
+#           mountPath: /var/run/secrets/azure/tokens
+#           readOnly: true
+#   volumes:
+#     - name: azure-token
+#       projected:
+#         sources:
+#           - serviceAccountToken:
+#               audience: api://24a568b2-d4c8-4fc8-9ee1-3b099ea75fea # replace with managed identity client ID
+#               expirationSeconds: 3600
+#               path: azure-identity-token
+
+# Not able to create Pod if specifying both volumes with api://AzureADTokenExchange & labels with azure.workload.identity/use: true
+# ---
+# pod.yaml
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: blob-access
+#   namespace: default
+#   labels:
+#     azure.workload.identity/use: "true" # Required. Only pods with this label can use workload identity.
+# spec:
+#   serviceAccountName: storage-access-sa
+#   containers:
+#     - name: azcli
+#       image: mcr.microsoft.com/azure-cli
+#       command: ["/bin/sh", "-c", "sleep 3600"]
+#       volumeMounts:
+#         - name: azure-token
+#           mountPath: /var/run/secrets/azure/tokens
+#           readOnly: true
+#   volumes:
+#     - name: azure-token
+#       projected:
+#         sources:
+#           - serviceAccountToken:
+#               audience: api://AzureADTokenExchange
+#               expirationSeconds: 3600
+#               path: azure-identity-token
+
+# Working code by assigning User Assigned Managed Identity to Agent Pool of AKS cluster
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: azure-cli-pod
+  namespace: default
+  labels:
+    azure.workload.identity/use: "true" # Required. Only pods with this label can use workload identity.
+spec:
+  serviceAccountName: azure-access-managed-identity-sa
+  containers:
+    - image: mcr.microsoft.com/azure-cli
+      name: azcli
+      command: ["sleep", "3600"]

@@ -1,0 +1,64 @@
+kubectl create -f pod.yml
+
+kubectl delete pod nginx
+
+kubectl create -f replicasets.yml
+
+kubectl delete replicaset nginx-replicaset
+
+kubectl apply -f azure-cli-deployment.yml
+
+kubectl delete deployment azure-cli-deployment
+
+kubectl get pods
+
+kubectl delete deployment nginx-deployment
+
+kubectl apply -f serviceaccount.yml
+
+kubectl get serviceaccounts
+
+kubectl delete serviceaccount azure-access-managed-identity-sa -n default
+
+kubectl get pods
+
+kubectl apply -f azure-cli-pod.yml
+
+kubectl exec -it azure-cli-pod -- bash
+
+kubectl exec -it azure-cli-pod -- /bin/bash
+
+env | grep -i azure
+
+az login --identity
+
+//Managed Identity Client ID
+az login --identity --client-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+////Managed Identity Object ID
+az login --identity --object-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+// this doesn't work
+az login --federated-token "/var/run/secrets/azure/tokens/azure-identity-token" --service-principal -u MANAGED_IDENTITY_CLIENT_ID -t AZURE_TENANT_ID
+
+az login --federated-token "$(cat $AZURE_FEDERATED_TOKEN_FILE)" --service-principal -u $AZURE_CLIENT_ID -t $AZURE_TENANT_ID
+
+az storage container list --account-name demoakstgacc123 --auth-mode login --output table
+
+az storage blob list --account-name demoakstgacc123 --container-name test-container --output table --auth-mode login
+
+az storage blob upload --account-name demoakstgacc123 --container-name test-container --name file6.txt --file /file6.txt --auth-mode login
+
+az identity federated-credential list --identity-name azure-access-managed-identity --resource-group aks-rg
+
+az role assignment create --assignee MANAGED_IDENTITY_CLIENT_ID --role Reader --scope /subscriptions/SUBSCRIPTION_ID
+
+az group list -o table
+
+
+kubectl run test-shell -n demo --image=mcr.microsoft.com/azure-cli --serviceaccount=storage-access-sa -- bash
+
+//kubectl declarative command
+kubectl run nginx-pod \
+     --image nginx:1.25.4 \
+     --dry-run=client -o yaml > nginx-pod.yaml
