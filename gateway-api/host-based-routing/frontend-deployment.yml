@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment-host-based
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-deployment-host-based
+  template:
+    metadata:
+      labels:
+        app: frontend-deployment-host-based
+    spec:
+      containers:
+        - image: hashicorp/http-echo
+          name: frontend-deployment-host-based
+          args:
+            - "-text=Frontend Deployment Host Based"

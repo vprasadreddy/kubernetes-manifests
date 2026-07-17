@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment-host-based
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-deployment-host-based
+  template:
+    metadata:
+      labels:
+        app: backend-deployment-host-based
+    spec:
+      containers:
+        - image: hashicorp/http-echo
+          name: backend-deployment-host-based
+          args:
+            - "-text=Backend Deployment Host Based"

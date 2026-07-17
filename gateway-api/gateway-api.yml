@@ -1,0 +1,39 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: demo-gateway
+spec:
+  gatewayClassName: nginx
+  # gatewayClassName: envoy-gateway
+  listeners:
+    # HTTP Listener
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # HTTPS Listener
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # - name: api-http
+    #   hostname: api.local
+    #   protocol: HTTP
+    #   port: 80
+
+    # - name: api-https
+    #   hostname: api.local
+    #   protocol: HTTPS
+    #   port: 443
+
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - kind: Secret
+    #         name: backend-api-cert
