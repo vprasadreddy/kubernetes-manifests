@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-deployment-path-based
+spec:
+  selector:
+    app: frontend-deployment-path-based
+  ports:
+    - port: 5678
+      targetPort: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-deployment-path-based
+spec:
+  selector:
+    app: backend-deployment-path-based
+  ports:
+    - port: 5678
+      targetPort: 5678

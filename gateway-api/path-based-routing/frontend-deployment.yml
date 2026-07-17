@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment-path-based
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-deployment-path-based
+  template:
+    metadata:
+      labels:
+        app: frontend-deployment-path-based
+    spec:
+      containers:
+        - image: hashicorp/http-echo
+          name: frontend-deployment-path-based
+          args:
+            - "-text=Frontend Deployment Path Based"
