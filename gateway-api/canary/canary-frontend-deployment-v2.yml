@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: canary-frontend-deployment-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: canary-frontend-deployment-v2
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: canary-frontend-deployment-v2
+        version: v2
+    spec:
+      containers:
+        - image: hashicorp/http-echo
+          name: frontend
+          args:
+            - "-text=Canary Frontend Deployment v2"
+          ports:
+            - containerPort: 5678
