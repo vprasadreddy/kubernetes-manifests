@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-deployment-path-based
+  name: frontend-service-path-based
 spec:
   selector:
-    app: frontend-deployment-path-based
+    app: frontend-service-path-based
   ports:
     - port: 5678
       targetPort: 5678
@@ -12,10 +12,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-deployment-path-based
+  name: backend-service-path-based
 spec:
   selector:
-    app: backend-deployment-path-based
+    app: backend-service-path-based
   ports:
     - port: 5678
       targetPort: 5678

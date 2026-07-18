@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service-host-based
+  name: frontend-service-host-based #Frontend Service name of the Kubernetes service
 spec:
   selector:
-    app: frontend-deployment-host-based
+    app: frontend-deployment-host-based #Searches for the pods by this label selector
   ports:
     - port: 5678
       targetPort: 5678
@@ -12,10 +12,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service-host-based
+  name: backend-service-host-based #Backend Service name of the Kubernetes service
 spec:
   selector:
-    app: backend-deployment-host-based
+    app: backend-deployment-host-based #Searches for the pods by this label selector
   ports:
     - port: 5678
       targetPort: 5678

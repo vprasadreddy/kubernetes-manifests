@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-deployment-host-based
+      app: frontend-deployment-host-based # Deployment searches for the pods by this label selector
   template:
     metadata:
       labels:
-        app: frontend-deployment-host-based
+        app: frontend-deployment-host-based #labels assigned to the pods created by this deployment
     spec:
       containers:
         - image: hashicorp/http-echo

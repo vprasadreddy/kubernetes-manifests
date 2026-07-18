@@ -15,5 +15,5 @@ spec:
 
   rules:
     - backendRefs:
-        - name: frontend
+        - name: frontend-service-host-based #Frontend Service name of the Kubernetes service
           port: 5678

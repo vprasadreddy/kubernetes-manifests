@@ -132,3 +132,20 @@ kubectl delete namespace nginx-gateway
 - `curl -k` disables TLS verification — only use for local testing with self-signed certs.
 - Replace the example hostnames and IPs with values appropriate for your environment.
 - For production use, obtain CA-signed certificates and follow NGINX Gateway Fabric security recommendations.
+
+Gateway
+│
+├── HTTPRoute (Path Routing)
+├── HTTPRoute (Host Routing)
+├── HTTPRoute (Canary)
+├── HTTPRoute (Header Routing)
+├── HTTPRoute (URL Rewrite)
+└── HTTPRoute (Redirect)
+
+One Gateway.
+
+Many HTTPRoutes.
+
+Keep a single Gateway and attach multiple HTTPRoute resources to it.
+
+This mirrors how Gateway API is typically used in production.

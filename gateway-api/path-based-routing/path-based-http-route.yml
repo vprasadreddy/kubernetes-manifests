@@ -14,7 +14,7 @@ spec:
             type: PathPrefix
             value: /frontend
       backendRefs:
-        - name: frontend-deployment-path-based
+        - name: frontend-service-path-based
           port: 5678
 
     - matches:
@@ -22,5 +22,5 @@ spec:
             type: PathPrefix
             value: /backend
       backendRefs:
-        - name: backend-deployment-path-based
+        - name: backend-service-path-based
           port: 5678
